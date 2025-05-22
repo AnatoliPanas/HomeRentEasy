@@ -1,1 +1,1 @@
-# EasyFindHome
+# HomeRentEasy
