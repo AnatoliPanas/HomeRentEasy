@@ -1,5 +1,6 @@
 from django.urls import path
 
+from applications.bookings.views import BookingListCreateGenericAPIView
 from applications.rent.views import (RentListCreateGenericAPIView,
                                      RentDetailUpdateDeleteGenericAPIView,
                                      RentSwitchActiveAPIView,
@@ -14,6 +15,8 @@ urlpatterns = [
     path('rent/', RentListCreateGenericAPIView.as_view()),
     path('rent/<int:rent_id>/', RentDetailUpdateDeleteGenericAPIView.as_view()),
     path('rent/<int:rent_id>/switch-active/', RentSwitchActiveAPIView.as_view()),
+
+    path('bookings/', BookingListCreateGenericAPIView.as_view()),
 
     path('address/', AddressListCreateGenericAPIView.as_view()),
 

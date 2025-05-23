@@ -1,0 +1,1 @@
+from applications.bookings.models.booking import Booking

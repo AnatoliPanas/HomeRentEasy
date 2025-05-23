@@ -13,6 +13,8 @@ from datetime import timedelta
 from pathlib import Path
 from environ import Env
 
+import applications.bookings.apps
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     # local
     'applications.users.apps.UsersConfig',
     'applications.rent.apps.RentConfig',
+    'applications.bookings.apps.BookingsConfig'
 ]
 
 MIDDLEWARE = [
