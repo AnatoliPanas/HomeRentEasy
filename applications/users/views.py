@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import AllowAny, SAFE_METHODS
+from rest_framework.permissions import AllowAny, SAFE_METHODS, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from applications.permissions.permissions import IsAdminOrAllowAny
 from applications.users.models.user import User
 from applications.users.serializers import RegisterUserSerializer, UserListSerializer
 from applications.users.utils import set_jwt_cookies
@@ -13,7 +14,12 @@ from applications.users.utils import set_jwt_cookies
 
 class RegisterUserAPIView(ListCreateAPIView):
     queryset = User.objects.all()
-    permission_classes = [AllowAny]
+    # permission_classes = [IsAdminOrAllowAny]
+
+    def get_permissions(self):
+        if self.request.method in SAFE_METHODS:
+            return [IsAdminUser()]
+        return [AllowAny()]
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:

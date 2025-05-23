@@ -43,6 +43,15 @@ class Rent(models.Model):
 
     class Meta:
         db_table = "rent"
+        constraints = [
+            models.UniqueConstraint(fields=[
+                'title',
+                'description',
+                'address',
+                'is_deleted'
+            ],
+                name='unique_listing_title_desc_address_not_deleted')
+        ]
 
     def __str__(self):
         return self.title

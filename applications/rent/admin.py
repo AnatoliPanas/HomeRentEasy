@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from applications.rent.models import Address, Rent
+
+admin.site.register(Address)
+admin.site.register(Rent)

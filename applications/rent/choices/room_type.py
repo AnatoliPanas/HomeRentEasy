@@ -12,6 +12,7 @@ class RoomType(str, Enum):
     PRIVATE_ROOM_IN_SHARED = "Отдельная комната в общей квартире"
     LOFT = "Лофт / Мансарда"
     STUDIO = "Студия"
+    HAUS = "Дом"
 
     @classmethod
     def choices(cls):
