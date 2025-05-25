@@ -62,23 +62,8 @@ class BookingDetailUpdateDeleteGenericAPIView(RetrieveUpdateAPIView):
         else:
             return BookingCreateSerializer
 
-    # def get_object(self):
-    #     obj = super().get_object()
-    #     if obj.status != WaitingStatus.PENDING.name:
-    #         raise PermissionDenied(f"Бронирование имеет статус {obj.status} и на данный момент не доступно дл редактирования")
-    #     self.check_object_permissions(self.request, obj)
-    #     return obj
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     if self.request.user == queryset.db.owner:
-    #         return Rent.objects.filter(
-    #             is_active=True
-    #         )
-    #     return queryset
-
     def partial_update(self, request, *args, **kwargs):
-        print('patch', '==' * 100)
+        # print('patch', '==' * 100)
         instance = self.get_object()
         user = request.user
         data = request.data.copy()
@@ -105,14 +90,3 @@ class BookingDetailUpdateDeleteGenericAPIView(RetrieveUpdateAPIView):
         instance.status = new_status
         instance.save()
         return Response(self.get_serializer(instance).data, status=status.HTTP_200_OK)
-
-
-
-        # Обновление остальных полей (например, дат) — только если статус PENDING
-        # if instance.status != WaitingStatus.PENDING.name:
-        #     raise PermissionDenied(f"Бронирование имеет статус {instance.status} и не может быть изменено")
-
-        # serializer = self.get_serializer(instance, data=data, partial=True)
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save()
-        # return Response(serializer.data, status=status.HTTP_200_OK)
