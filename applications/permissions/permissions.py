@@ -16,10 +16,21 @@ class IsOwnerOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         else:
-            print(request.user,"--------",obj.owner)
+            print(request.user, "--------", obj.owner)
             return request.user == obj.owner and request.user.role in (RoleType.LESSOR.name,
                                                                        RoleType.MODERATOR.name,
                                                                        RoleType.ADMIN.name)
+
+
+class IsOwnerOrReadOnlyBooking(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.role == RoleType.ADMIN.name:
+            return True
+        elif request.method == 'PUT':
+            return False
+        else:
+            return (request.user in (obj.lessee, obj.rent.owner)
+                    and request.user.role in (RoleType.LESSOR.name, RoleType.LESSEE.name))
 
 
 class IsAdminOrAllowAny(BasePermission):

@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.utils import timezone
 from django.db import models
 
@@ -42,7 +44,8 @@ class Booking(models.Model):
         ]
 
     def can_cancel(self):
-        return timezone.now().date() < self.start_date
+        return (self.status == WaitingStatus.CONFIRMED.name and
+                timezone.now().date() < self.start_date - timedelta(days=2))
 
     def __str__(self):
         return f'{self.lessee} - {self.rent}'

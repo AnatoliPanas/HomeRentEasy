@@ -24,31 +24,6 @@ class AddressCreateSerializer(serializers.ModelSerializer):
                         'apartment_number': {'required': False}}
 
 
-class RentDetailSerializer(serializers.ModelSerializer):
-    address = AddressListSerializer(read_only=True, allow_null=True)
-    owner = serializers.StringRelatedField(read_only=True)
-
-    # address = serializers.StringRelatedField()
-    # address = serializers.SlugRelatedField(
-    #     slug_field='country',
-    #     read_only=True
-    # )
-
-    class Meta:
-        model = Rent
-        fields = [
-            'title',
-            'description',
-            'address',
-            'price',
-            'rooms_count',
-            'room_type',
-            'is_active',
-            'created_at',
-            'owner'
-        ]
-
-
 class RentListSerializer(serializers.ModelSerializer):
     address = serializers.StringRelatedField(read_only=True)
 
@@ -73,6 +48,30 @@ class RentCreateSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {'is_active': {'write_only': True}}
 
+
+class RentDetailSerializer(serializers.ModelSerializer):
+    address = AddressListSerializer(read_only=True, allow_null=True)
+    owner = serializers.StringRelatedField(read_only=True)
+
+    # address = serializers.StringRelatedField()
+    # address = serializers.SlugRelatedField(
+    #     slug_field='country',
+    #     read_only=True
+    # )
+
+    class Meta:
+        model = Rent
+        fields = [
+            'title',
+            'description',
+            'address',
+            'price',
+            'rooms_count',
+            'room_type',
+            'is_active',
+            'created_at',
+            'owner'
+        ]
 
 class RentSwitchActiveSerializer(serializers.ModelSerializer):
     class Meta:
