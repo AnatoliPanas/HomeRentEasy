@@ -24,7 +24,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title='HomeEasy API',
         default_version='v1',
-        description='Our Task API with permissions',
+        description='Our HomeEasy API with permissions',
         terms_of_service='https://www.google.com/policies/terms/',
         contact=openapi.Contact(name='Anatoli Panas', email='net@net.net'),
         license=openapi.License(name='OUR LICENSE', url='https://example.com')

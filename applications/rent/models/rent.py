@@ -46,7 +46,6 @@ class Rent(models.Model):
         constraints = [
             models.UniqueConstraint(fields=[
                 'title',
-                'description',
                 'address',
                 'is_deleted'
             ],
