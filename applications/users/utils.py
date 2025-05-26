@@ -6,8 +6,8 @@ def set_jwt_cookies(response, user):
     refresh_token = RefreshToken.for_user(user)
     access_token = refresh_token.access_token
 
-    access_expiry = datetime.datetime.fromtimestamp(access_token['exp'], datetime.UTC)
-    refresh_expiry = datetime.datetime.fromtimestamp(refresh_token['exp'], datetime.UTC)
+    access_expiry = datetime.datetime.fromtimestamp(access_token['exp'], datetime.timezone.utc)
+    refresh_expiry = datetime.datetime.fromtimestamp(refresh_token['exp'], datetime.timezone.utc)
 
     response.set_cookie(
         key='access_token',

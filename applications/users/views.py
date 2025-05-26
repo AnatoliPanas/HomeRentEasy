@@ -33,7 +33,10 @@ class RegisterUserAPIView(ListCreateAPIView):
         user = serializer.save()
 
         response = Response(
-            data=serializer.data,
+            data={
+                "message": "Пользователь успешно создан",
+                "data": serializer.data
+            },
             status=status.HTTP_201_CREATED
         )
         set_jwt_cookies(response, user)
@@ -46,6 +49,12 @@ class LogInAPIView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
 
+        if not username or not password:
+            return Response(
+                data={"message": "Имя пользователя и пароль обязательны"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         user = authenticate(
             request=request,
             username=username,
@@ -54,6 +63,7 @@ class LogInAPIView(APIView):
 
         if user:
             response = Response(
+                data={"message": f"Авторизация для пользователя: {user.username} выполнена"},
                 status=status.HTTP_200_OK
             )
 
@@ -63,14 +73,18 @@ class LogInAPIView(APIView):
 
         else:
             return Response(
-                data={"message": "Invalid username or password."},
+                data={"message": "Не верный логин или пароль"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
 
 class LogOutAPIView(APIView):
-    def post(self, request):
-        response = Response(status=status.HTTP_200_OK)
+    def post(self, request: Request) -> Response:
+        user = request.user
+        response = Response(
+            data={"message": f"Выход для пользователя: {user} выполнен"},
+            status=status.HTTP_200_OK
+        )
 
         response.delete_cookie('access_token')
         response.delete_cookie('refresh_token')
