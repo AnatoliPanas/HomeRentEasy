@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db import models
 
 from applications.bookings.choices.waiting_status import WaitingStatus
-from applications.rent.models import Rent
+from applications.rent.models.rent import Rent
 from applications.users.models import User
 
 

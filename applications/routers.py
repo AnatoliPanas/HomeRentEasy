@@ -6,6 +6,7 @@ from applications.rent.views import (RentListCreateGenericAPIView,
                                      RentSwitchActiveAPIView,
                                      AddressListCreateGenericAPIView
                                      )
+from applications.reviews.views import ReviewCreateGenericAPIView, ReviewListGenericAPIView
 
 from applications.users.views import (RegisterUserAPIView,
                                       LogInAPIView,
@@ -18,6 +19,9 @@ urlpatterns = [
 
     path('bookings/', BookingListCreateGenericAPIView.as_view()),
     path('bookings/<int:booking_id>/', BookingDetailUpdateDeleteGenericAPIView.as_view()),
+
+    path('reviews/', ReviewCreateGenericAPIView.as_view()),
+    path('reviews/<int:rent_id>/', ReviewListGenericAPIView.as_view()),
 
     path('address/', AddressListCreateGenericAPIView.as_view()),
 

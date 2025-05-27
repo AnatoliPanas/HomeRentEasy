@@ -1,9 +1,11 @@
 from django.db import models
+from django.db.models import Avg, F
 from django.utils import timezone
 
 from applications.rent.choices.room_type import RoomType
 from applications.rent.managers.rent import SoftDeleteManager
 from applications.rent.models.locations import Address
+from applications.reviews.models.review import Review
 from applications.users.models.user import User
 
 
@@ -25,6 +27,9 @@ class Rent(models.Model):
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
+    avg_rating = models.FloatField(default=0.0)
+    cn_views = models.PositiveIntegerField(default=0)
+
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -38,8 +43,17 @@ class Rent(models.Model):
     def delete(self, *arg, **kwargs):
         self.is_deleted = True
         self.deleted_at = timezone.now()
+        self.save(update_fields=['is_deleted', 'deleted_at'])
 
-        self.save()
+    def set_cn_views(self):
+        self.cn_views = F('cn_views') + 1
+        self.save(update_fields=['cn_views'])
+        self.refresh_from_db(fields=['cn_views'])
+
+    def set_avg_rating(self):
+        avg = Review.objects.filter(rent = self).aggregate(avg=Avg('rating'))['avg'] or 0.0
+        self.avg_rating = round(avg, 1)
+        self.save(update_fields=['avg_rating'])
 
     class Meta:
         db_table = "rent"

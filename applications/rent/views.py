@@ -87,21 +87,17 @@ class RentDetailUpdateDeleteGenericAPIView(RetrieveUpdateDestroyAPIView):
         else:
             return RentCreateSerializer
 
-
     def get_object(self):
         obj = super().get_object()
         if obj.owner != self.request.user and not obj.is_active:
             raise PermissionDenied("Объявление не доступно")
-        self.check_object_permissions(self.request, obj)
         return obj
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     if self.request.user == queryset.db.owner:
-    #         return Rent.objects.filter(
-    #             is_active=True
-    #         )
-    #     return queryset
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.set_cn_views()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
         data = request.data
