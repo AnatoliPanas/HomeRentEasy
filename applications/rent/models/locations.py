@@ -10,11 +10,11 @@ class Address(models.Model):
     house_number = models.CharField(max_length=16, blank=True, null=True)
     apartment_number = models.CharField(max_length=16, blank=True, null=True)
     postal_code = models.CharField(max_length=19, blank=True, null=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'address'
+        ordering = ['-created_at']
         constraints = [
             models.UniqueConstraint(fields=[
                 'country',
@@ -34,5 +34,5 @@ class Address(models.Model):
     )
 
     def __str__(self):
-        parts = [self.city, self.street, self.house_number]
+        parts = [self.country, self.city, self.street, self.house_number]
         return ', '.join(filter(None, parts))

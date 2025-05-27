@@ -5,10 +5,8 @@ from rest_framework import status, filters
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView,
-                                     get_object_or_404,
-                                     RetrieveAPIView,
-                                     ListAPIView)
-from rest_framework.permissions import SAFE_METHODS, AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
+                                     get_object_or_404)
+from rest_framework.permissions import SAFE_METHODS, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -59,7 +57,7 @@ class RentListCreateGenericAPIView(ListCreateAPIView):
 
     filterset_class = RentFilter
     search_fields = ['title', 'description']
-    ordering_fields = ['price', 'created_at']
+    ordering_fields = ['price', 'created_at', 'avg_rating', 'cn_views']
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:

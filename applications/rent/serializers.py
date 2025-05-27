@@ -9,6 +9,7 @@ class AddressListSerializer(serializers.ModelSerializer):
         model = Address
         fields = '__all__'
 
+
 class AddressCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
@@ -26,13 +27,21 @@ class AddressCreateSerializer(serializers.ModelSerializer):
 
 class RentListSerializer(serializers.ModelSerializer):
     address = serializers.StringRelatedField(read_only=True)
-
     owner = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Rent
-        fields = '__all__'
-
+        fields = [
+            'title',
+            'description',
+            'address',
+            'price',
+            'rooms_count',
+            'room_type',
+            'avg_rating',
+            'cn_views',
+            'owner'
+        ]
 
 class RentCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,7 +59,7 @@ class RentCreateSerializer(serializers.ModelSerializer):
 
 
 class RentDetailSerializer(serializers.ModelSerializer):
-    address = AddressListSerializer(read_only=True, allow_null=True)
+    address = serializers.StringRelatedField(read_only=True)
     owner = serializers.StringRelatedField(read_only=True)
 
     # address = serializers.StringRelatedField()
@@ -68,10 +77,13 @@ class RentDetailSerializer(serializers.ModelSerializer):
             'price',
             'rooms_count',
             'room_type',
+            'avg_rating',
+            'cn_views',
             'is_active',
             'created_at',
             'owner'
         ]
+
 
 class RentSwitchActiveSerializer(serializers.ModelSerializer):
     class Meta:

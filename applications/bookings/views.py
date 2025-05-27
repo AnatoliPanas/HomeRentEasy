@@ -1,12 +1,8 @@
-from datetime import timedelta, datetime
-
 from django.db.models import Q
-from django.shortcuts import render
-from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status
 from rest_framework.exceptions import PermissionDenied, ValidationError
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
 from rest_framework.response import Response
 
@@ -14,7 +10,6 @@ from applications.bookings.choices.waiting_status import WaitingStatus
 from applications.bookings.models import Booking
 from applications.bookings.serializers import BookingListSerializer, BookingCreateSerializer
 from applications.permissions.permissions import IsOwnerOrReadOnlyBooking
-from applications.users.choices.role_type import RoleType
 
 
 class BookingListCreateGenericAPIView(ListCreateAPIView):
@@ -35,23 +30,6 @@ class BookingListCreateGenericAPIView(ListCreateAPIView):
     filterset_fields = ['rent', 'start_date', 'end_date']
     search_fields = ['rent', 'start_date']
     ordering_fields = ['start_date', 'end_date']
-
-    # def get_object(self):
-    #     print('post', '==' * 100)
-    #     obj = super().get_object()
-    #     data = self.request.data
-    #
-    #     try:
-    #         start_date = datetime.strptime(data.get('start_date'), "%Y-%m-%d").date() if data.get(
-    #             'start_date') else None
-    #         end_date = datetime.strptime(data.get('end_date'), "%Y-%m-%d").date() if data.get('start_date') else None
-    #     except ValueError:
-    #         raise PermissionDenied("Некорректный формат даты. Используйте YYYY-MM-DD.")
-    #
-    #     if obj.status == WaitingStatus.CONFIRMED.name:
-    #         raise PermissionDenied(f"Жилье уже забронированно c {start_date=} по {end_date=}")
-    #     self.check_object_permissions(self.request, obj)
-    #     return obj
 
     def get_queryset(self):
         user = self.request.user
@@ -91,7 +69,7 @@ class BookingListCreateGenericAPIView(ListCreateAPIView):
         )
 
         if booking.exists():
-            print('booking.exists().USER', '==' * 50)
+            # print('booking.exists().USER', '==' * 50)
             existing = booking.first()
             raise PermissionDenied(
                 f"Вы уже подали бронь на это объявление с {existing.start_date.strftime('%d.%m.%Y')} по {existing.end_date.strftime('%d.%m.%Y')}"
