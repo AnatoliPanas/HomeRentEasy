@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Subquery, OuterRef
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import status, filters
@@ -66,9 +66,8 @@ class RentListCreateGenericAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Rent.objects.all()
-
-        return queryset.filter(Q(owner=user) | Q(is_active=True))
+        queryset = Rent.objects.select_related('address', 'owner').filter(Q(owner=user) | Q(is_active=True))
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -78,6 +77,9 @@ class RentDetailUpdateDeleteGenericAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Rent.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
     lookup_url_kwarg = 'rent_id'
+
+    def get_queryset(self):
+        return Rent.objects.select_related('owner', 'address')
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:

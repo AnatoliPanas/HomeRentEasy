@@ -33,7 +33,7 @@ class BookingListCreateGenericAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Booking.objects.all()
+        queryset = Booking.objects.select_related('lessee', 'rent__owner')
         if user.is_superuser:
             return queryset
 
@@ -82,6 +82,9 @@ class BookingDetailUpdateDeleteGenericAPIView(RetrieveUpdateAPIView):
     queryset = Booking.objects.all()
     permission_classes = [IsOwnerOrReadOnlyBooking]
     lookup_url_kwarg = 'booking_id'
+
+    def get_queryset(self):
+        return Booking.objects.select_related('lessee', 'rent__owner')
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:

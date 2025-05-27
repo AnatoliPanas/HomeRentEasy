@@ -8,6 +8,9 @@ from applications.bookings.models import Booking
 
 
 class BookingListSerializer(serializers.ModelSerializer):
+    lessee = serializers.StringRelatedField(read_only=True)
+    rent = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Booking
         fields = '__all__'

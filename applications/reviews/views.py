@@ -19,15 +19,15 @@ class ReviewCreateGenericAPIView(CreateAPIView):
         rent = serializer.validated_data.get('rent')
         user = self.request.user
 
-        booking = Booking.objects.filter(lessee=user, rent=rent)
+        booking = Booking.objects.filter(lessee=user, rent=rent).select_related('rent', 'lessee')
         if not booking.exists():
             raise PermissionDenied("Вы можете оставить отзыв только после бронирования этого объявления.")
 
-        review = Review.objects.filter(reviewer=user, rent=rent)
+        review = Review.objects.filter(reviewer=user, rent=rent).select_related('rent', 'reviewer')
         if review.exists():
             raise PermissionDenied("Вы уже оставили отзыв на это объявление")
 
-        serializer.save(reviewer=self.request.user)
+        serializer.save(reviewer=user)
 
 class ReviewListGenericAPIView(ListAPIView):
     queryset = Review.objects.all()
@@ -45,5 +45,5 @@ class ReviewListGenericAPIView(ListAPIView):
 
     def get_queryset(self):
         rent_id = self.kwargs.get('rent_id')
-        queryset = Review.objects.filter(rent=rent_id)
+        queryset = Review.objects.filter(rent=rent_id).select_related('reviewer', 'rent')
         return queryset
