@@ -47,7 +47,7 @@ class AddressListCreateGenericAPIView(ListCreateAPIView):
 
 
 class RentListCreateGenericAPIView(ListCreateAPIView):
-    queryset = Rent.objects.all()
+    # queryset = Rent.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
     filter_backends = [
         DjangoFilterBackend,

@@ -14,6 +14,7 @@ from applications.users.utils import set_jwt_cookies
 
 class RegisterUserAPIView(ListCreateAPIView):
     queryset = User.objects.all()
+
     # permission_classes = [IsAdminOrAllowAny]
 
     def get_permissions(self):
@@ -41,6 +42,7 @@ class RegisterUserAPIView(ListCreateAPIView):
         )
         set_jwt_cookies(response, user)
         return response
+
 
 class LogInAPIView(APIView):
     permission_classes = [AllowAny]
@@ -80,12 +82,12 @@ class LogInAPIView(APIView):
 
 class LogOutAPIView(APIView):
     def post(self, request: Request) -> Response:
-        user = request.user
+
+
         response = Response(
-            data={"message": f"Выход для пользователя: {user} выполнен"},
+            data={"message": f"Выход выполнен"},
             status=status.HTTP_200_OK
         )
-
         response.delete_cookie('access_token')
         response.delete_cookie('refresh_token')
 
