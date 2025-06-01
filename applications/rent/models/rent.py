@@ -10,7 +10,7 @@ from applications.users.models.user import User
 
 
 class Rent(models.Model):
-    title = models.CharField(max_length=90)
+    title = models.CharField(max_length=90, db_index=True)
     description = models.TextField()
     address = models.ForeignKey(
         Address,
@@ -19,13 +19,13 @@ class Rent(models.Model):
         blank=True,
         related_name='rents'
     )
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2, db_index=True)
     rooms_count = models.PositiveSmallIntegerField(default=0)
     room_type = models.CharField(max_length=36, choices=RoomType.choices())
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False, db_index=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     avg_rating = models.FloatField(default=0.0)

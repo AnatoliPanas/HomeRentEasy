@@ -11,12 +11,14 @@ class Review(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='reviews',
-        limit_choices_to={'role': 'LESSEE'}
+        limit_choices_to={'role': 'LESSEE'},
+        db_index=True
     )
     rent = models.ForeignKey(
         'rent.Rent',
         on_delete=models.CASCADE,
-        related_name='reviews'
+        related_name='reviews',
+        db_index=True
     )
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1),
                                                           MaxValueValidator(5)]

@@ -13,19 +13,22 @@ class Booking(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='bookings',
-        limit_choices_to={'role': 'LESSEE'}
+        limit_choices_to={'role': 'LESSEE'},
+        db_index=True
     )
     rent = models.ForeignKey(
         Rent,
         on_delete=models.CASCADE,
-        related_name='bookings'
+        related_name='bookings',
+        db_index=True
     )
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(db_index=True)
+    end_date = models.DateField(db_index=True)
     status = models.CharField(
         max_length=10,
         choices=WaitingStatus.choices(),
-        default=WaitingStatus.PENDING.name
+        default=WaitingStatus.PENDING.name,
+        db_index=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -42,6 +45,10 @@ class Booking(models.Model):
                 fields=['lessee', 'rent', 'start_date', 'end_date'],
                 name='unique_booking_per_user_rent_period'
             )
+        ]
+        indexes = [
+            models.Index(fields=['rent', 'start_date', 'end_date'], name='booking_date_check_idx'),
+            models.Index(fields=['status', 'start_date'], name='booking_status_date_idx'),
         ]
 
     def can_cancel(self):
