@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { padding: 20px; }
+        .rating { color: gold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Здравствуйте, {{ review.rent.owner.first_name }}!</h2>
+        <p>На ваше объявление "{{ review.rent.title }}" появился новый отзыв.</p>
+
+        <h3>Детали отзыва:</h3>
+        <ul>
+            <li>Рейтинг: <span class="rating">{{ review.rating }}/5</span></li>
+            <li>Автор: {{ review.reviewer.username }}</li>
+            <li>Комментарий: {{ review.comment }}</li>
+        </ul>
+
+        <p>С уважением,<br>Команда HomeRentEasy</p>
+    </div>
+</body>
+</html>

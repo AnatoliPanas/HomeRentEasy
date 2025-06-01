@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { padding: 20px; }
+        .status { font-weight: bold; color: #2c5282; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Здравствуйте, {{ recipient_name }}!</h2>
+        <p> {{ text_status }} <span class="status">{{ booking.get_status_display }}</span></p>
+
+        <h3>Детали бронирования:</h3>
+        <ul>
+            <li>Объявление: {{ booking.rent.title }}</li>
+            <li>Дата заезда: {{ booking.start_date|date:"d.m.Y" }}</li>
+            <li>Дата выезда: {{ booking.end_date|date:"d.m.Y" }}</li>
+        </ul>
+
+        <p>С уважением,<br>Администратор HomeRentEasy</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Здравствуйте, {{ review.rent.owner.first_name }}!
+
+На ваше объявление "{{ review.rent.title }}" появился новый отзыв.
+
+Детали отзыва:
+- Рейтинг: {{ review.rating }}/5
+- Автор: {{ review.reviewer.username }}
+- Комментарий: {{ review.comment }}
+
+С уважением,
+Команда HomeRentEasy

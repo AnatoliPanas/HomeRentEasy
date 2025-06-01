@@ -1,0 +1,11 @@
+Здравствуйте, {{ recipient_name }}!
+
+{{ text_status }}: {{ booking.get_status_display }}
+
+Детали бронирования:
+- Объявление: {{ booking.rent.title }}
+- Дата заезда: {{ booking.start_date|date:"d.m.Y" }}
+- Дата выезда: {{ booking.end_date|date:"d.m.Y" }}
+
+С уважением,
+Администратор HomeRentEasy

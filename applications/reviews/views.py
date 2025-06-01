@@ -2,9 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticated
 
-from applications.bookings.choices.waiting_status import WaitingStatus
 from applications.bookings.models import Booking
 from applications.reviews.models.review import Review
 from applications.reviews.serializers import ReviewCreateSerializer, ReviewListSerializer
@@ -30,7 +29,7 @@ class ReviewCreateGenericAPIView(CreateAPIView):
         serializer.save(reviewer=user)
 
 class ReviewListGenericAPIView(ListAPIView):
-    queryset = Review.objects.all()
+    # queryset = Review.objects.all()
     serializer_class = ReviewListSerializer
     permission_classes = [IsAuthenticated]
 

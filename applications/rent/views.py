@@ -49,6 +49,7 @@ class AddressListCreateGenericAPIView(ListCreateAPIView):
 class RentListCreateGenericAPIView(ListCreateAPIView):
     # queryset = Rent.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
+    ordering = ['-avg_rating']
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,

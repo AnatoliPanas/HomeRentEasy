@@ -58,7 +58,7 @@ class Rent(models.Model):
 
     class Meta:
         db_table = "rent"
-        ordering = ['-created_at']
+        ordering = ['-avg_rating']
         constraints = [
             models.UniqueConstraint(fields=[
                 'title',
