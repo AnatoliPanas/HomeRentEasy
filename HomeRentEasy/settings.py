@@ -70,6 +70,7 @@ ROOT_URLCONF = 'HomeRentEasy.urls'
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'maildev'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 # EMAIL_HOST_USER = ''
@@ -109,6 +110,7 @@ if MYSQL:
             'NAME': env('MYSQL_DB'),
             'USER': env('MYSQL_USER'),
             'PASSWORD': env('MYSQL_PASSWORD'),
+            # 'HOST': 'dbMySQL',
             'HOST': 'localhost',
             'PORT': 3306,
             'OPTIONS': {'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'},

@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='rent',
-            constraint=models.UniqueConstraint(fields=('title', 'description', 'address', 'is_deleted'), name='unique_listing_title_desc_address_not_deleted'),
+            constraint=models.UniqueConstraint(fields=('title', 'address', 'is_deleted'), name='unique_listing_title_desc_address_not_deleted'),
         ),
     ]

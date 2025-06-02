@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=90)),
-                ('description', models.TextField()),
+                ('description', models.TextField(max_length=500)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=6)),
                 ('rooms_count', models.PositiveSmallIntegerField(default=0)),
                 ('room_type', models.CharField(choices=[('SINGLE_ROOM', 'Одна комната (студия)'), ('ONE_BEDROOM', 'Одна комната с отдельной спальней'), ('TWO_BEDROOM', 'Две комнаты с общей ванной'), ('TWO_BEDROOM_ENSUITE', 'Две комнаты с отдельными ванными'), ('THREE_BEDROOM', 'Три комнаты'), ('SUITE', 'Сьют / Апартаменты'), ('SHARED_ROOM', 'Общая комната / койко-место'), ('PRIVATE_ROOM_IN_SHARED', 'Отдельная комната в общей квартире'), ('LOFT', 'Лофт / Мансарда'), ('STUDIO', 'Студия')], max_length=36)),

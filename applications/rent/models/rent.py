@@ -11,7 +11,7 @@ from applications.users.models.user import User
 
 class Rent(models.Model):
     title = models.CharField(max_length=90, db_index=True)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
     address = models.ForeignKey(
         Address,
         on_delete=models.SET_NULL,
