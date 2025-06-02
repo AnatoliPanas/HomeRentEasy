@@ -1,5 +1,6 @@
 import re
 
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -113,3 +114,30 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(
+        required=True,
+        error_messages={
+            'required': _('Поле email обязательно для заполнения'),
+            'invalid': _('Введите корректный email адрес')
+        }
+    )
+
+    # username = serializers.CharField(
+    #     required=True,
+    #     error_messages={
+    #         'required': _('Поле username обязательно для заполнения'),
+    #         'invalid': _('Введите корректное username')
+    #     }
+    # )
+
+    password = serializers.CharField(
+        required=True,
+        write_only=True,
+        min_length=8,
+        error_messages={
+            'required': _('Поле password обязательно для заполнения'),
+            'min_length': _('Пароль должен содержать минимум 8 символов')
+        }
+    )

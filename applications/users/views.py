@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from applications.permissions.permissions import IsAdminOrAllowAny
 from applications.users.models.user import User
-from applications.users.serializers import RegisterUserSerializer, UserListSerializer
+from applications.users.serializers import RegisterUserSerializer, UserListSerializer, LoginSerializer
 from applications.users.utils import set_jwt_cookies
 
 
@@ -46,15 +46,26 @@ class RegisterUserAPIView(ListCreateAPIView):
 
 class LogInAPIView(APIView):
     permission_classes = [AllowAny]
+    serializer_class = LoginSerializer
 
     def post(self, request: Request) -> Response:
-        username = request.data.get('username')
-        password = request.data.get('password')
+        # username = request.data.get('username')
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid():
+            return Response(data={"errors": serializer.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        if not username or not password:
+        email = request.data.get('email')
+        password = request.data.get('password')
+        try:
+            username = User.objects.get(email=email).username
+        except User.DoesNotExist:
             return Response(
-                data={"message": "Имя пользователя и пароль обязательны"},
-                status=status.HTTP_400_BAD_REQUEST
+                data={
+                    "error": "Неверные учетные данные",
+                    "message": f"Пользователь с почтой: {email} не найден"
+                },
+                status=status.HTTP_401_UNAUTHORIZED
             )
 
         user = authenticate(
@@ -63,27 +74,43 @@ class LogInAPIView(APIView):
             password=password
         )
 
-        if user:
-            response = Response(
-                data={"message": f"Авторизация для пользователя: {user.username} выполнена"},
-                status=status.HTTP_200_OK
-            )
-
-            set_jwt_cookies(response=response, user=user)
-
-            return response
-
-        else:
+        if not user:
             return Response(
-                data={"message": "Не верный логин или пароль"},
+                data={
+                    "error": "Неверные учетные данные",
+                    "message": "Проверьте правильность введенной почты и пароля"
+                },
                 status=status.HTTP_401_UNAUTHORIZED
             )
+
+        if not user.is_active:
+            return Response(
+                data={
+                    "error": "Аккаунт неактивен",
+                    "message": "Ваш аккаунт был деактивирован. Пожалуйста, свяжитесь с администратором."
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        response = Response(
+            data={
+                "message": "Авторизация успешна",
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "username": user.username
+                }
+            },
+            status=status.HTTP_200_OK
+        )
+
+        set_jwt_cookies(response=response, user=user)
+
+        return response
 
 
 class LogOutAPIView(APIView):
     def post(self, request: Request) -> Response:
-
-
         response = Response(
             data={"message": f"Выход выполнен"},
             status=status.HTTP_200_OK
@@ -92,28 +119,3 @@ class LogOutAPIView(APIView):
         response.delete_cookie('refresh_token')
 
         return response
-
-# class RegisterUserAPIView(APIView):
-#     permission_classes = [AllowAny]
-#
-#     def get (self, request) -> Response:
-#         serializer = UserListSerializer(data=request.data)
-#         if serializer.is_valid():
-#             response = Response(
-#                 data=serializer.data,
-#                 status=status.HTTP_200_OK
-#             )
-#
-#         return response
-#
-#     def post(self, request: Request) -> Response:
-#         serializer = RegisterUserSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#
-#         response = Response(
-#             data=serializer.data,
-#             status=status.HTTP_201_CREATED
-#         )
-#
-#         return response
