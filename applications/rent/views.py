@@ -71,7 +71,28 @@ class RentListCreateGenericAPIView(ListCreateAPIView):
         return queryset
 
     def perform_create(self, serializer):
+        title = serializer.validated_data.get('title')
+        address = serializer.validated_data.get('address')
+
+        rent = Rent.objects.filter(
+            title=title,
+            address=address,
+            is_deleted=False
+        )
+
+        if rent.exists():
+            raise PermissionDenied(
+                f"Такое объявление уже подано"
+            )
+
         serializer.save(owner=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response({
+            'message': 'Объявление успешно создано',
+            'data': response.data
+        }, status=status.HTTP_201_CREATED)
 
 
 class RentDetailUpdateDeleteGenericAPIView(RetrieveUpdateDestroyAPIView):
