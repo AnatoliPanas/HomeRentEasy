@@ -1,19 +1,19 @@
 #version: '3'
 
 services:
-#  nginx:
-#    image: nginx:latest
-#    restart: unless-stopped
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    volumes:
-#      - ./nginx/conf.d/:/etc/nginx/conf.d
-#      - ./html:/usr/share/nginx/html
-#    depends_on:
-#      - web
-#    networks:
-#      - app_network
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./html:/usr/share/nginx/html
+    depends_on:
+      - web
+    networks:
+      - app_network
 
   web:
     build: .
