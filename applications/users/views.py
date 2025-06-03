@@ -57,20 +57,21 @@ class LogInAPIView(APIView):
 
         email = request.data.get('email')
         password = request.data.get('password')
-        try:
-            username = User.objects.get(email=email).username
-        except User.DoesNotExist:
-            return Response(
-                data={
-                    "error": "Неверные учетные данные",
-                    "message": f"Пользователь с почтой: {email} не найден"
-                },
-                status=status.HTTP_401_UNAUTHORIZED
-            )
+        # username = request.data.get('username')
+        # try:
+        #     username = User.objects.get(email=email).username
+        # except User.DoesNotExist:
+        #     return Response(
+        #         data={
+        #             "error": "Неверные учетные данные",
+        #             "message": f"Пользователь с почтой: {email} не найден"
+        #         },
+        #         status=status.HTTP_401_UNAUTHORIZED
+        #     )
 
         user = authenticate(
             request=request,
-            username=username,
+            username=email,
             password=password
         )
 
