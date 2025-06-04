@@ -3,7 +3,28 @@
 ## О проекте
 
 **HomeRentEasy** — полнофункциональный back-end для системы аренды жилья на Django.  
-Проект поддерживает работу с объявлениями, бронированиями, отзывами, ролями пользователей, фильтрацией, JWT-аутентификацией, REST API, тестами и развертыванием через Docker/MySQL.
+Проект поддерживает работу с объявлениями, бронированиями, отзывами, ролями пользователей, фильтрацией,
+JWT-аутентификацией, REST API, тестами и развертыванием через Docker/MySQL.
+
+## Основные возможности
+
+- Регистрация и аутентификация пользователей (арендодатель и арендатор)
+- Создание и редактирование объявлений об аренде
+- Поиск и фильтрация объектов по параметрам
+- Бронирование объектов на определённые даты
+- Оставление отзывов и оценок по аренде
+- Админ-панель для управления всеми сущностями
+- Поддержка различных ролей пользователей
+- Email-уведомления
+
+## Технологии
+
+- **Backend:** Python 3, Django 5.x
+- **База данных:** PostgreSQL (или SQLite для разработки)
+- **Тесты:** pytest, factory_boy, Faker
+- **Docker:** поддержка запуска через Docker (dev и prod)
+- **HTML:** базовые шаблоны для UI
+-
 
 ---
 
@@ -11,16 +32,18 @@
 
 ### 1.1. Клонируйте репозиторий
 
-```sh
-git clone <your_repo_url>
+```bash
+git clone https://github.com/AnatoliPanas/HomeRentEasy.git
 cd HomeRentEasy
 ```
 
 ### 1.2. Создайте виртуальное окружение (venv)
 
-```sh
-python -m venv venv
-venv\Scripts\activate
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+.venv\Scripts\activate      # Windows
+pip install -r requirements.txt
 ```
 
 ### 1.3. Установите зависимости
@@ -41,7 +64,8 @@ copy .env.example .env
 
 ---
 
-## 2. Запуск с MySQL через Docker Compose
+
+## 2. Запуск Docker Compose
 
 ### 2.1. Проверьте настройки .env
 
@@ -54,13 +78,13 @@ copy .env.example .env
   MYSQL_ROOT_PASSWORD=...
   ```
 
-### 2.2. Запустите контейнер MySQL
+### 2.2. Запустите контейнер
 
-```sh
-docker-compose up -d
+```bash
+docker-compose up --build
 ```
 
-- Убедитесь, что контейнер mysql поднялся (`docker ps`).
+- Убедитесь, что контейнер поднялся (`docker ps`).
 
 ### 2.3. Примените миграции и запустите сервер
 
@@ -161,4 +185,4 @@ HomeRentEasy/
 
 ## 11. Обратная связь
 
-По вопросам пишите [контакту из Swagger](mailto:net@net.net).
+**Автор:** [Anatoli Panas](https://github.com/AnatoliPanas)
